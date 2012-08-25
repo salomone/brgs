@@ -38,8 +38,8 @@ describe RDFAdmission do
     end
 
     it "splits a 12 lines file on 3 pieces of 4 lines" do
-        subject.stub!(:lines_limit).and_return(4)
-        subject.stub!(:count).and_return(12)
+        subject.stub(:lines_limit).and_return(4)
+        subject.stub(:count).and_return(12)
         pieces = subject.split("")
 
         pieces.length.should eq(3)
@@ -47,8 +47,8 @@ describe RDFAdmission do
     end
 
     it "doesn't split a file smaller than the lines limit" do
-        subject.stub!(:lines_limit).and_return(20)
-        subject.stub!(:count).and_return(10)
+        subject.stub(:lines_limit).and_return(20)
+        subject.stub(:count).and_return(10)
         pieces = subject.split("")
 
         pieces.length.should eq(1)
@@ -56,8 +56,8 @@ describe RDFAdmission do
     end
 
     it "splits last piece smaller than the rest if division is not perfect" do
-        subject.stub!(:lines_limit).and_return(100)
-        subject.stub!(:count).and_return(123)
+        subject.stub(:lines_limit).and_return(100)
+        subject.stub(:count).and_return(123)
         pieces = subject.split("")
 
         pieces.length.should eq(2)
@@ -65,13 +65,13 @@ describe RDFAdmission do
     end
 
     it "doesn't return pieces for empty files" do
-        subject.stub!(:count).and_return(0)
+        subject.stub(:count).and_return(0)
         subject.split("").should be_empty
     end
 
     it "should enqueue 3 jobs for a 12 lines rdf when line_limit is 4" do
-        subject.stub!(:lines_limit).and_return(4)
-        subject.stub!(:count).and_return(12)
+        subject.stub(:lines_limit).and_return(4)
+        subject.stub(:count).and_return(12)
         Resque.should_receive(:enqueue).with(RDFParsing, "test_paper", "paper.nt", {first: 0, last: 3}).and_return(true)
         Resque.should_receive(:enqueue).with(RDFParsing, "test_paper", "paper.nt", {first: 4, last: 7}).and_return(true)
         Resque.should_receive(:enqueue).with(RDFParsing, "test_paper", "paper.nt", {first: 8, last: 11}).and_return(true)

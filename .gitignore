@@ -1,0 +1,4 @@
+example-rdfs/grande/*
+!example-rdfs/grande/readme.txt
+example-rdfs/venti/*
+!example-rdfs/venti/readme.txt

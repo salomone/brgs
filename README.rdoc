@@ -1,0 +1,92 @@
+== BRGS :: Big-data RDF Graph Searcher
+
+This is my masters project implementation. The purpose of this project is to parse a large RDF dataset, create a graph of it's data and enable keyword searches of it.
+
+You know, this is still WIP.
+
+
+== Running it for development
+
+Resque-web without daemonizing it and the annoying browser launching:
+
+$ ./web.sh
+
+General worker:
+
+$ ./worker.sh
+
+Start parsing the paper.nt rdf:
+
+$ ruby example.rb
+
+
+== Jobs
+
+These are the types of jobs that can be created:
+
+= RDF Admission
+
+Input: RDF File
+Action: Enqueue a RDF Parsing job for every 1M lines
+
+= RDF Parsing
+
+Input: RDF File with checksum and range of lines
+Action: Index nodes and relations, feed predicate-object collection
+
+= Graph Spider
+
+Input: Graph name
+Action: Enqueue a Graph Crawler job for each source
+
+= Graph Crawler
+
+Input: Graph name and source node index
+Action: Run BFS, index paths, create Path Processer job for each path
+
+= Path Processer
+
+Input: Graph name and path index
+Action: Index template, feed sparse matrix
+
+
+== Indexes, collections and sparse matrix
+
+= Nodes Index
+
+Uses: ElasticSearch
+From node index to node value and from node value to node index
+
+= Relations Index
+
+Uses: ElasticSearch
+From relation index to relation value and from relation value to index
+
+= Predicate-object Collection
+
+Uses: Redis
+From node index to list of tuples with predicate relation index and object node index
+
+= Path Index
+
+Uses: Redis
+From path index to list of node-relation-node-...-relation-node indexes
+
+= Template Index
+
+Uses: Redis
+From template index to list of relation-relation-...-relation indexes
+
+= Sparse Matrix
+
+Uses: Redis
+From pair of node-path indexes to tuple of node_pos, path_len, template index
+
+
+== Bye
+
+Go on and develop.
+
+Danilo Moret
+PUC-Rio
+Globo.com

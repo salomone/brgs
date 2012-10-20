@@ -2,8 +2,8 @@
 
 class FileSplitter
   class << self
-    def split(rdf)
-      lc = count(rdf)
+    def segment(filename)
+      lc = count(filename)
       cl = 0
       step = [lc, lines_limit()].min
       segments = []
@@ -20,21 +20,21 @@ class FileSplitter
       1000000
     end
 
-    def count(rdf)
-      if empty?(rdf)
+    def count(filename)
+      if empty?(filename)
           return 0
       end
-      lc = `wc -l #{rdf}`.match(/(\d+)/)[1].to_i
-      lc = lc + 1 unless ends_with_newline?(rdf)
+      lc = `wc -l #{filename}`.match(/(\d+)/)[1].to_i
+      lc = lc + 1 unless ends_with_newline?(filename)
       return lc
     end
 
-    def ends_with_newline?(rdf)
-      `tail -n 1 #{rdf} | wc -l`.match(/(\d+)/)[1].to_i == 1
+    def ends_with_newline?(filename)
+      `tail -n 1 #{filename} | wc -l`.match(/(\d+)/)[1].to_i == 1
     end
 
-    def empty?(rdf)
-      `wc -w #{rdf}`.match(/(\d+)/)[1].to_i == 0
+    def empty?(filename)
+      `wc -w #{filename}`.match(/(\d+)/)[1].to_i == 0
     end
 
   end

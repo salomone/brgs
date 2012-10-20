@@ -6,7 +6,7 @@ class RDFAdmission
   class << self
 
     def perform(name, rdf)
-      FileSplitter.split(rdf).each do |segment|
+      FileSplitter.segment(rdf).each do |segment|
         Resque.enqueue(RDFParsing, name, rdf, segment)
       end
     end

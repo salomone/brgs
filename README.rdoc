@@ -31,7 +31,7 @@ Action: Enqueue a RDF Parsing job for every 1M lines
 
 = RDF Parsing
 
-Input: RDF File with checksum and range of lines
+Input: RDF file piece with 1M lines
 Action: Index nodes and relations, feed predicate-object collection
 
 = Graph Spider

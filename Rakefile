@@ -1,10 +1,11 @@
 require 'resque'
 require 'resque/tasks'
-require './app/jobs/rdf_admission'
+
+require File.expand_path("#{File.dirname(__FILE__)}/config/environment", __FILE__)
 
 namespace :worker do
-    task :start do
-        Resque.redis.namespace = "resque:brgs"
-        Rake::Task['resque:work'].invoke
-    end
+  task :start do
+    Resque.redis.namespace = "development:brgs:resque"
+    Rake::Task['resque:work'].invoke
+  end
 end

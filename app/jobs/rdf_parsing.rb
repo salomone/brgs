@@ -1,5 +1,4 @@
-require 'rdf'
-require 'rdf/ntriples'
+# -*- coding: utf-8 -*-
 
 class RDFParsing
   @queue = :rdf_parsing

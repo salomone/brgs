@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 class FileSplitter
   class << self
     def split(rdf)

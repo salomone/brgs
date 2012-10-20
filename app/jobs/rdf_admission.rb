@@ -1,6 +1,4 @@
-require 'resque'
-require "./app/jobs/rdf_parsing"
-require "./lib/file_splitter"
+# -*- coding: utf-8 -*-
 
 class RDFAdmission
   @queue = :rdf_admission

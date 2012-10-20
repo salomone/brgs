@@ -4,3 +4,4 @@ gem 'resque', :require => "resque/server"
 gem 'rake'
 gem 'rspec'
 gem 'rdf'
+gem 'debugger'

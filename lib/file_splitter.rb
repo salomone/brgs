@@ -11,7 +11,7 @@ class FileSplitter
         first = cl
         cl = cl + step
         last = [lc - 1, cl - 1].min
-        segments.push({first: first, last: last})
+        segments.push({first: first + 1, last: last + 1})
       end
       return segments
     end
@@ -37,5 +37,8 @@ class FileSplitter
       `wc -w #{filename}`.match(/(\d+)/)[1].to_i == 0
     end
 
+    def piece(filename, segment)
+      return `sed -n #{segment[:first]},#{segment[:last]}p #{filename}`
+    end
   end
 end

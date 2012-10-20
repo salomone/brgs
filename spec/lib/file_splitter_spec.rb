@@ -6,6 +6,7 @@ describe FileSplitter do
   a_1_line_file = "spec/assets/1_line_file.txt"
   a_3_line_file = "spec/assets/3_lines_file.txt"
   paper_file = "spec/assets/paper.nt"
+  paper_file_5_to_8_lines = File.read "spec/assets/paper_5_to_8.nt"
 
   context 'when counting lines' do
     it "detects empty files" do
@@ -68,6 +69,13 @@ describe FileSplitter do
     it "doesn't return pieces for empty files" do
       described_class.stub(:count).and_return(0)
       described_class.segment("").should be_empty
+    end
+  end
+
+  context 'when getting pieces of a file' do
+    it "should get lines 5 to 8 of a 12 lines file" do
+      piece = described_class.piece(paper_file, {first: 5, last: 8})
+      piece.should eq(paper_file_5_to_8_lines)
     end
   end
 end

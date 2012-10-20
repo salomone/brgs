@@ -1,0 +1,4 @@
+<http://demo.com/publications.rdf#pub1> <http://demo.com/syntax#year> "2008" .
+<http://demo.com/publications.rdf#pub2> <http://demo.com/syntax#year> "2008" .
+<http://demo.com/publications.rdf#pub1> <http://demo.com/syntax#acceptedBy> <http://demo.com/conferences.rdf#conf1> .
+<http://demo.com/publications.rdf#pub2> <http://demo.com/syntax#acceptedBy> <http://demo.com/conferences.rdf#conf1> .

@@ -1,4 +1,5 @@
-require "./app/jobs/rdf_parsing"
+# -*- coding: utf-8 -*-
+require 'spec_helper'
 
 describe RDFParsing, "parser" do
   paper_file = "spec/assets/paper.nt"

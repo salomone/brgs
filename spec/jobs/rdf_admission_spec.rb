@@ -1,7 +1,5 @@
-require 'resque'
-require "./app/jobs/rdf_admission"
-require "./app/jobs/rdf_parsing"
-require "./lib/file_splitter"
+# -*- coding: utf-8 -*-
+require 'spec_helper'
 
 describe RDFAdmission do
   it "enqueues 3 jobs when splitter splits file in three" do

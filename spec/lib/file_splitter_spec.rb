@@ -1,5 +1,5 @@
-require 'resque'
-require "./lib/file_splitter"
+# -*- coding: utf-8 -*-
+require 'spec_helper'
 
 describe FileSplitter do
   empty_file = "spec/assets/empty_file.txt"

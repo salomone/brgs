@@ -20,10 +20,5 @@ describe RDFParsing, "parser" do
       subject.should_receive(:parse_line).exactly(12)
       subject.perform
     end
-
-    it "hits redis to store nodes twice for each line" do
-      subject.redis.should_receive(:sadd).with('nodes', anything()).exactly(24)
-      subject.perform
-    end
   end
 end

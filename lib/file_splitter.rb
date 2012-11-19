@@ -17,7 +17,7 @@ class FileSplitter
     end
 
     def lines_limit
-      1000000
+      100000
     end
 
     def count(filename)

@@ -1,0 +1,5 @@
+<http://demo.com/rdf#a> <http://demo.com/rdf#t> <http://demo.com/rdf#b> .
+<http://demo.com/rdf#a> <http://demo.com/rdf#t> <http://demo.com/rdf#c> .
+<http://demo.com/rdf#b> <http://demo.com/rdf#t> <http://demo.com/rdf#d> .
+<http://demo.com/rdf#c> <http://demo.com/rdf#t> <http://demo.com/rdf#d> .
+<http://demo.com/rdf#d> <http://demo.com/rdf#t> <http://demo.com/rdf#e> .

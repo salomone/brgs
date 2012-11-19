@@ -5,17 +5,18 @@ class RDFParsing
 
   @queue = :rdf_parsing
 
-  def self.perform(name, rdf_string)
-    new(name, rdf_string).perform
+  def self.perform(name, rdf_segment)
+    new(name, rdf_segment).perform
   end
 
-  def initialize(name, rdf_string)
+  def initialize(name, rdf_segment)
     @name = name
-    @rdf_string = rdf_string
+    @rdf_segment = rdf_segment
   end
 
   def perform
-    RDF::Reader.for(:ntriples).new(@rdf_string) do |reader|
+    rdf_string = redis.hget 'segments', @rdf_segment
+    RDF::Reader.for(:ntriples).new(rdf_string) do |reader|
       reader.each_statement do |statement|
         parse_line(*statement.to_triple)
       end
@@ -23,30 +24,17 @@ class RDFParsing
   end
 
   def parse_line(s, p, o)
-    si, sc = index 'nodes', s
-    pi = index 'edges', p
-    oi, oc = index 'nodes', o
+    si, sc = index 'node', s
+    pi = index('edge', p)[0]
+    oi, oc = index 'node', o
 
-    redis.sadd "predicate_objects:#{si}", "#{pi},#{oi}"
+    redis.sadd "edges_from_node:#{si}", "#{pi},#{oi}"
 
     redis.sadd 'sources', si if sc
     redis.srem 'sources', oi
 
     redis.sadd 'sinks', oi if oc
     redis.srem 'sinks', si
-  end
-
-  def index(collection, item)
-    created = false
-    index = redis.hget "#{collection}_to_index", item
-    if index.nil?
-      index = redis.incr "#{collection}_count"
-      redis.hset "#{collection}_to_index", item, index
-      redis.hset "#{collection}_from_index", index, item
-      created = true
-    end
-
-    return index, created
   end
 
 end

@@ -44,7 +44,7 @@ Action: Enqueue a Graph Crawler job for each source
 Input: Graph name and source node index
 Action: Run BFS, index paths, create Path Processer job for each path
 
-= Path Processer
+= Matrix Builder
 
 Input: Graph name and path index
 Action: Index template, feed sparse matrix

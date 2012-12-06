@@ -1,0 +1,2 @@
+web: RACK_ENV=production rvm_path=$HOME/.rvm/ $HOME/.rvm/bin/rvm-shell "ruby-1.9.3-p194@brgs" -c "bundle exec resque-web -L -F -N brgs:resque"
+worker: RACK_ENV=production rvm_path=$HOME/.rvm/ $HOME/.rvm/bin/rvm-shell "ruby-1.9.3-p194@brgs" -c "bundle exec rake VVERBOSE=1 QUEUES=* resque:work"

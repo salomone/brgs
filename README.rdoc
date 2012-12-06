@@ -7,17 +7,45 @@ You know, this is still WIP.
 
 == Running it for development
 
-Resque-web without daemonizing it and the annoying browser launching:
+First, rvm is your friend. If you were not prompted yet, install rvm, leave and re-enter the project folder. Second, once you are in the project folder run:
 
-$ ./web.sh
+$ bundle install
 
-General worker:
+To work on development and run tests, you will need redis-server up and running. After it's up, you can run the tests with:
 
-$ ./worker.sh
+$ spec rspec
 
-Start parsing the paper.nt rdf:
+And see things integrated in your development machine with:
 
-$ ruby example.rb
+$ foreman start
+
+If you want to run more workers, you can set it up on foreman's concurrency parameters - but keep in mind you should have only one resque-web running:
+
+$ foreman start -c web=1,worker=3
+
+Now you can use the API to parse NTriples files. Check the example at example.rb.
+
+
+== Deploying
+
+The deploy process is based on capistrano and foreman. Before deploying, create a file called servers.rb at the root of the project. In this file, you should list your servers as you would with capistrano, using the :foreman role for your resque-web instance and workers. For example:
+
+server 'ec2-12-23-13-123.compute-1.amazonaws.com', :redis, :foreman, :concurrency => 'web=1,worker=2'
+server 'ec2-12-23-13-124.compute-1.amazonaws.com', :foreman, :concurrency => 'worker=4'
+
+As of now, the deploy process expects all servers to be Ubuntu Servers, accessible via SSH by the user 'ubuntu' using ssh-key. The first time you run it, and everytime there's a change on the requirements, run:
+
+$ cap deploy:setup
+
+On the first time you deploy, run:
+
+$ cap deploy:cold
+
+To avoid errors when starting foreman to take care of the processes. Finally, everytime later you wish to deploy just run:
+
+$ cap deploy
+
+And the app code will be updated and all foreman roles restarted. You can also start and stop things individually: check cap -vT for more information.
 
 
 == Jobs

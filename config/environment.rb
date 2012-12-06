@@ -7,9 +7,8 @@ rescue LoadError
   exit 1
 end
 
+$:.unshift(File.expand_path("..", __FILE__))
+
 ENV['RACK_ENV'] ||= 'development'
-
 Bundler.require :default, ENV['RACK_ENV']
-
-Dir["#{File.dirname(__FILE__)}/../lib/**/*.rb"].each {|f| require f}
-Dir["#{File.dirname(__FILE__)}/../app/**/*.rb"].each {|f| require f}
+RailsConfig.load_and_set_settings "config/environments/#{ENV['RACK_ENV']}.yml"

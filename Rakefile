@@ -12,8 +12,9 @@ end
 
 namespace :paper do
   desc 'Clears current indexes and indexes paper.nt'
-  task :admission do
-    Resque.enqueue RDFAdmission, 'paper', 'example-rdfs/tall/paper.nt'
+  task :admission, :ntfile do |t, args|
+    args.with_defaults(:ntfile => 'example-rdfs/tall/paper.nt')
+    Resque.enqueue RDFAdmission, 'paper', args[:ntfile]
   end
 
   desc 'Clears sparse matrix and builds it from current indexes'

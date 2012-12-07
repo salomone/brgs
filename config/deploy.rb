@@ -77,8 +77,14 @@ namespace :setup do
 end
 
 namespace :rake do
-  task :default, :once => :true do
+  task :default, :roles => :redis do
     run "cd #{current_path} && RACK_ENV=production #{remote_bundle} exec rake #{rake_task}"
+  end
+end
+
+namespace :remote do
+  task :default do
+    run "#{cmd}"
   end
 end
 

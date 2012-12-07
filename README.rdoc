@@ -23,7 +23,10 @@ If you want to run more workers, you can set it up on foreman's concurrency para
 
 $ foreman start -c web=1,worker=3
 
-Now you can use the API to parse NTriples files. Check the example at example.rb.
+Now you can use the API to parse NTriples files. See the example by running each command and waiting for them to finish by checking the log and the web interface:
+
+$ rake paper:admission
+$ rake paper:spider
 
 
 == Deploying

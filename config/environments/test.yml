@@ -1,2 +1,4 @@
 redis:
   namespace: test:brgs:resque
+  host: localhost
+  port: 6379

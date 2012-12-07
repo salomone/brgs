@@ -1,6 +1,6 @@
 module RedisConnection
   def redis
-    @redis_connection ||= Redis::Namespace.new "#{ENV['RACK_ENV']}:bgrs"
+    @redis_connection ||= Redis::Namespace.new(Settings.redis.namespace, :redis => Redis.new(Settings.redis.to_hash))
   end
 
   def index collection, item

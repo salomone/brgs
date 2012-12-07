@@ -51,39 +51,6 @@ namespace :foreman do
   after 'deploy:cold', 'foreman:start'
 end
 
-# [:web, :worker].each do |role|
-#   app_role = "#{application}_#{role}"
-#   app_init = "#{application}-#{role}"
-
-#   namespace app_role do
-#     desc "Sets up foreman to #{app_init}"
-#     task :setup, :roles => role do
-#       remote_bundle = "/home/ubuntu/.rvm/gems/ruby-1.9.3-p194@global/bin/bundle"
-#       upload "Procfile.prod", "#{current_path}/Procfile.prod"
-#       run "cd #{current_path} && rvmsudo #{remote_bundle} exec foreman export upstart /etc/init -a brgs -c '#{role}=1' -u #{user} -l /var/log/brgs -f Procfile.prod"
-#     end
-
-#     desc "Asks foreman to restart #{app_init}"
-#     task :restart, :roles => role do
-#       sudo "restart #{app_init}"
-#     end
-
-#     desc "Asks foreman to start #{app_init}"
-#     task :start, :roles => role do
-#       sudo "start #{app_init}"
-#     end
-
-#     desc "Asks foreman to stop #{app_init}"
-#     task :stop, :roles => role do
-#       sudo "stop #{app_init}"
-#     end
-
-#     after 'deploy', "#{app_role}:setup"
-#     after 'deploy', "#{app_role}:restart"
-#     after 'deploy:cold', "#{app_role}:start"
-#   end
-# end
-
 namespace :deploy do
   desc 'Creates extra folders ahead of time and resets some permissions'
   task :more_setup do

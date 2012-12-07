@@ -16,9 +16,6 @@ describe RDFParsing, "parser" do
   context "when parsing an rdf string" do
     subject {described_class.new "paper", paper_file}
 
-    it "parses each line of of the file" do
-      subject.should_receive(:parse_line).exactly(12)
-      subject.perform
-    end
+    it "parses each line of of the file"
   end
 end

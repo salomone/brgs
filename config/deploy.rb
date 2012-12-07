@@ -76,5 +76,11 @@ namespace :setup do
   end
 end
 
+namespace :rake do
+  task :default, :once => :true do
+    run "cd #{current_path} && RACK_ENV=production #{remote_bundle} exec rake #{rake_task}"
+  end
+end
+
 require 'bundler/capistrano'
 require 'rvm/capistrano'

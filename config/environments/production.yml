@@ -1,4 +1,8 @@
 redis:
+  namespace: brgs
+  host: redis-server
+  port: 6379
+resque:
   namespace: brgs:resque
   host: redis-server
   port: 6379

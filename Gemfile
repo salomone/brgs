@@ -6,6 +6,7 @@ gem 'rdf'
 gem 'rails_config'
 gem 'foreman'
 gem 'aws-sdk'
+gem 'hiredis'
 
 group :development do
   gem 'debugger'
@@ -13,4 +14,5 @@ group :development do
   gem 'capistrano'
   gem 'railsless-deploy', :require => false
   gem 'rvm-capistrano'
+  gem 'ruby-prof'
 end

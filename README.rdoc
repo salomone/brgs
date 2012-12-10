@@ -31,11 +31,17 @@ $ rake paper:spider
 
 == Deploying
 
-The deploy process is based on capistrano and foreman. Before deploying, create a file called servers.rb at the root of the project. In this file, you should set which is your redis_hostname and list your servers as you would with capistrano, using the :foreman role for your resque-web instance and workers. For example:
+The deploy process is based on capistrano and foreman. It will need a servers.rb file on the project root as in this example example:
 
 set :redis_server, 'ip-10-123-32-210.ec2.internal'
 server 'ec2-12-23-13-123.compute-1.amazonaws.com', :redis, :foreman, :concurrency => 'web=1,worker=2'
 server 'ec2-12-23-13-124.compute-1.amazonaws.com', :foreman, :concurrency => 'worker=4'
+
+You can also generate this file using the rake task that will list your servers that have a tag named brgs_roles accordingly:
+
+$ AWS_ACCESS_KEY_ID=your-access-key AWS_SECRET_ACCESS_KEY=your-secret-access-key rake paper:servers_rb > servers.rb
+
+You can set your access keys in env.rb . Check lib/network_builder.rb for further details.
 
 As of now, the deploy process expects all servers to be Ubuntu Servers, accessible via SSH by the user 'ubuntu' using ssh-key. The first time you run it, and everytime there's a change on the requirements, run:
 

@@ -5,6 +5,7 @@ gem 'rake'
 gem 'rdf'
 gem 'rails_config'
 gem 'foreman'
+gem 'aws-sdk'
 
 group :development do
   gem 'debugger'

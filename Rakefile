@@ -1,6 +1,7 @@
 require 'resque'
 require 'resque/tasks'
 
+load 'env.rb' if File.exist? 'env.rb'
 require File.expand_path('../config/application', __FILE__)
 
 namespace :resque do
@@ -25,5 +26,9 @@ namespace :paper do
   desc 'Prints a path[path_index]'
   task :path, :path_index do |t, args|
     PrintUtils.path args[:path_index]
+  end
+
+  task :servers_rb do
+    puts NetworkBuilder.servers_rb
   end
 end

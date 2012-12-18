@@ -15,4 +15,5 @@ group :development do
   gem 'railsless-deploy', :require => false
   gem 'rvm-capistrano'
   gem 'ruby-prof'
+  gem 'simplecov', :require => false
 end

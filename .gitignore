@@ -5,3 +5,4 @@ example-rdfs/venti/*
 servers.rb
 env.rb
 drafts.rb
+coverage/

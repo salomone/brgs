@@ -11,7 +11,7 @@ namespace :resque do
   end
 end
 
-namespace :paper do
+namespace :brgs do
   desc 'Clears current indexes and indexes paper.nt'
   task :admission, :ntfile do |t, args|
     args.with_defaults(:ntfile => 'example-rdfs/tall/paper.nt')

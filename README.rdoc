@@ -25,8 +25,8 @@ $ foreman start -c web=1,worker=3
 
 Now you can use the API to parse NTriples files. See the example by running each command and waiting for them to finish by checking the log and the web interface:
 
-$ rake paper:admission
-$ rake paper:spider
+$ rake brgs:admission
+$ rake brgs:spider
 
 
 == Deploying
@@ -39,7 +39,7 @@ server 'ec2-12-23-13-124.compute-1.amazonaws.com', :foreman, :concurrency => 'wo
 
 You can also generate this file using the rake task that will list your servers that have a tag named brgs_roles accordingly:
 
-$ AWS_ACCESS_KEY_ID=your-access-key AWS_SECRET_ACCESS_KEY=your-secret-access-key rake paper:servers_rb > servers.rb
+$ AWS_ACCESS_KEY_ID=your-access-key AWS_SECRET_ACCESS_KEY=your-secret-access-key rake brgs:servers_rb > servers.rb
 
 You can set your access keys in env.rb . Check lib/network_builder.rb for further details.
 

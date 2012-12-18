@@ -6,12 +6,14 @@ describe RedisConnection do
     include RedisConnection
   end
 
-  it "returns a namespaced connection based on rack environment" do
-    old_rack_env = ENV['RACK_ENV']
-    ENV['RACK_ENV'] = 'bogus_rack_env_test'
+  it 'returns a namespaced connection using settings redis' do
+    Settings.should_receive(:redis).
+      any_number_of_times.
+      and_return(OpenStruct.new({
+        :namespace => 'bogus_namespace',
+        :to_hash => {:host => 'localhost', :port => 6379}
+      }))
 
-    DummyUsingRedisConnection.new.redis.namespace.should eq "bogus_rack_env_test:bgrs"
-
-    ENV['RACK_ENV'] = old_rack_env
+    DummyUsingRedisConnection.new.redis.namespace.should eq 'bogus_namespace'
   end
 end

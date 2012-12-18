@@ -1,3 +1,3 @@
-set :redis_server, '<%= topology[:redis] %>'
+<% unless topology[:servers].empty? %>set :redis_server, '<%= topology[:redis] %>'
 <% topology[:servers].each do |server| %>
-server '<%= server[:dns] %>', <%= server[:roles].to_s[1..-2] %><% if server.has_key? :concurrency %>, :concurrency => '<%= server[:concurrency] %>'<% end %><% end %>
+server '<%= server[:dns] %>', <%= server[:roles].to_s[1..-2] %><% if server.has_key? :concurrency %>, :concurrency => '<%= server[:concurrency] %>'<% end %><% end %><% else %># No servers found - please follow README.rdoc instructions.<% end %>

@@ -1,9 +1,12 @@
 class NetworkBuilder
 
+  def self.ec2
+    @ec2 ||= AWS::EC2.new
+  end
+
   def self.topology
     topology = {:redis => nil, :servers => []}
-    ec2 = AWS::EC2.new
-    ec2.instances.each do |instance|
+    self.ec2.instances.each do |instance|
       if instance.tags.has_key? 'brgs_roles'
         server = {}
         roles = instance.tags['brgs_roles'].split(',').map {|i| i.to_sym}

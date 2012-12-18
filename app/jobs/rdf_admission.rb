@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+require 'tempfile'
 
 class RDFAdmission
   extend RedisConnection
@@ -7,7 +8,13 @@ class RDFAdmission
 
   class << self
 
-    def perform(name, rdf)
+    def perform(name)
+      rdf_file = Tempfile.new name
+      rdf_content = redis.get name
+      rdf_file.write rdf_content
+      rdf = rdf_file.path
+      rdf_file.close
+
       nodes_count = redis.get 'nodes_count'
       1.upto(nodes_count.to_i) do |n|
         redis.del "edges_from_node:#{n}"
@@ -25,6 +32,8 @@ class RDFAdmission
         redis.hset 'segments', segment[:first], piece
         Resque.enqueue RDFParsing, name, segment[:first]
       end
+
+      rdf_file.unlink
     end
 
   end

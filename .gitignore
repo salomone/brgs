@@ -4,3 +4,4 @@ example-rdfs/venti/*
 !example-rdfs/venti/readme.txt
 servers.rb
 env.rb
+drafts.rb

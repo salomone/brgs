@@ -2,7 +2,7 @@ require 'rails_config'
 RailsConfig.load_and_set_settings 'config/environments/production.yml'
 
 set :application, 'brgs'
-set :scm, :none
+set :scm, :git
 set :repository, '.'
 set :deploy_via, :copy
 set :rvm_ruby_string, 'ruby-1.9.3-p194@brgs'

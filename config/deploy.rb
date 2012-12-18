@@ -56,9 +56,11 @@ namespace :foreman do
 end
 
 namespace :setup do
-  desc 'Creates extra folders ahead of time and resets some permissions'
+  desc 'Resets some permissions, installs build-essential'
   task :fixes do
     sudo "chown -R ubuntu:ubuntu #{deploy_to}"
+    sudo 'apt-get update'
+    apt_get 'build-essential libxslt-dev libxml2-dev'
   end
 
   desc 'Installs and setup redis'

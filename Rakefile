@@ -9,7 +9,7 @@ def web_server
 end
 
 def ntfile
-  ENV['NTFILE'] || 'example-rdfs/tall/paper.nt'
+  ENV['NTFILE'] || File.expand_path('../example-rdfs/tall/paper.nt', __FILE__)
 end
 
 namespace :resque do
@@ -26,7 +26,7 @@ end
 namespace :brgs do
   desc 'Clears current indexes and indexes paper.nt'
   task :admission do |t, args|
-    `curl -s -F 'rdf=@#{ntfile}' #{web_server}:5678/admission`
+    `curl -s -F 'rdf-uri=#{ntfile}' #{web_server}:5678/admission`
   end
 
   desc 'Clears sparse matrix and builds it from current indexes'

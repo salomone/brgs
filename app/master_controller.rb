@@ -1,5 +1,6 @@
 require 'resque'
 require 'resque/server'
+require 'open-uri'
 
 # Extends Resque Web Based UI.
 # Structure has been borrowed from ResqueScheduler.
@@ -12,9 +13,11 @@ module BRGSResque
 
     def self.included(base)
       base.class_eval do
-        
+
         post '/admission' do
-          BRGS::Index.admission 'paper', params['rdf'][:tempfile].read
+          open(params['rdf-uri']) do |f|
+            BRGS::Index.admission 'paper', f.read
+          end
         end
 
         put '/spider' do

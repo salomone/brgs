@@ -13,7 +13,6 @@ group :development do
   gem 'rspec'
   gem 'capistrano'
   gem 'railsless-deploy', :require => false
-  gem 'rvm-capistrano'
   gem 'ruby-prof'
   gem 'simplecov', :require => false
 end

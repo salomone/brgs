@@ -5,21 +5,22 @@ set :application, 'brgs'
 set :scm, :git
 set :repository, '.'
 set :deploy_via, :copy
-set :rvm_ruby_string, 'ruby-1.9.3-p194@brgs'
-set :remote_bundle, "/home/ubuntu/.rvm/gems/ruby-1.9.3-p194@global/bin/bundle"
+# set :rvm_ruby_string, 'ruby-1.9.3-p194@brgs'
+# set :remote_bundle, "/home/ubuntu/.rvm/gems/ruby-1.9.3-p194@global/bin/bundle"
 
 set :user, 'ubuntu'
 ssh_options[:forward_agent] = true
 
 load File.expand_path('../../servers.rb', __FILE__)
 
-before 'deploy:setup', 'rvm:install_rvm'
-before 'deploy:setup', 'rvm:install_ruby'
+# before 'deploy:setup', 'rvm:install_rvm'
+# before 'deploy:setup', 'rvm:install_ruby'
+before 'deploy:setup', 'setup:essentials'
 after 'deploy:setup', 'setup:fixes'
 after 'deploy:setup', 'setup:redis_hostname'
 after 'deploy:setup', 'setup:redis'
 
-before 'deploy', 'rvm:create_gemset'
+# before 'deploy', 'rvm:create_gemset'
 
 def apt_get packages
   sudo "DEBIAN_FRONTEND=noninteractive apt-get -y install #{packages}"
@@ -30,7 +31,7 @@ namespace :foreman do
   task :setup, :roles => :foreman do
     upload 'Procfile.prod', "#{current_path}/Procfile.prod"
     find_servers_for_task(current_task).each do |server|
-      run "cd #{current_path} && rvmsudo #{remote_bundle} exec foreman export upstart /etc/init -a #{application} -c '#{server.options[:concurrency]}' -u #{user} -f Procfile.prod", :hosts => server
+      sudo "foreman export upstart /etc/init -a #{application} -c '#{server.options[:concurrency]}' -u #{user} -f #{current_path}/Procfile.prod", :hosts => server
     end
   end
 
@@ -56,11 +57,16 @@ namespace :foreman do
 end
 
 namespace :setup do
-  desc 'Resets some permissions, installs build-essential'
+  desc 'Installs build-essential and libs'
+  task :essentials do
+    sudo 'apt-get update'
+    apt_get 'ruby1.9.3 rubygems build-essential libxslt-dev libxml2-dev'
+    sudo 'gem install bundle foreman'
+  end
+
+  desc 'Resets some permissions'
   task :fixes do
     sudo "chown -R ubuntu:ubuntu #{deploy_to}"
-    sudo 'apt-get update'
-    apt_get 'build-essential libxslt-dev libxml2-dev'
   end
 
   desc 'Installs and setup redis'
@@ -73,8 +79,11 @@ namespace :setup do
 
   desc 'Sets hostname pointing to redis'
   task :redis_hostname do
-    set :ghost, "/home/ubuntu/.rvm/gems/ruby-1.9.3-p194@brgs/bin/ghost"
-    run "gem install ghost && rvmsudo #{ghost} delete redis-server && rvmsudo #{ghost} add redis-server #{redis_server}"
+    sudo 'gem install ghost'
+    sudo 'ghost delete redis-server'
+    sudo "ghost add redis-server #{redis_server}"
+    # set :ghost, "/home/ubuntu/.rvm/gems/ruby-1.9.3-p194@brgs/bin/ghost"
+    # run "gem install ghost && rvmsudo #{ghost} delete redis-server && rvmsudo #{ghost} add redis-server #{redis_server}"
   end
 end
 
@@ -91,4 +100,4 @@ namespace :remote do
 end
 
 require 'bundler/capistrano'
-require 'rvm/capistrano'
+# require 'rvm/capistrano'

@@ -7,7 +7,7 @@ class NetworkBuilder
   def self.topology
     topology = {:redis => nil, :servers => []}
     self.ec2.instances.each do |instance|
-      if instance.tags.has_key? 'brgs_roles'
+      if (instance.status == :running) && (instance.tags.has_key? 'brgs_roles')
         server = {}
         roles = instance.tags['brgs_roles'].split(',').map {|i| i.to_sym}
 

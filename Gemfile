@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'resque', :require => "resque/server"
+gem 'resque-job-stats'
 gem 'rake'
 gem 'rdf'
 gem 'rails_config'

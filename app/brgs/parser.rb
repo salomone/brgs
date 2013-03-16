@@ -16,6 +16,21 @@ module BRGS
       redis.del 'segments'
     end
 
+    def self.segments rdf_content, &segment_cb
+      rdf_file = Tempfile.new ['brgs', 'nt']
+      rdf_file.write rdf_content
+      rdf = rdf_file.path
+      rdf_file.close
+
+      FileSplitter.segment(rdf).each do |segment|
+        piece = FileSplitter.piece rdf, segment
+        redis.hset 'segments', segment[:first], piece
+        unless segment_cb.nil?
+          segment_cb.call segment
+        end
+      end
+    end
+
     def self.parse_segment(name, rdf_segment)
       @name = name
       @rdf_segment = rdf_segment

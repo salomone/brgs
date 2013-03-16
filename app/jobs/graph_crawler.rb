@@ -8,36 +8,40 @@ class GraphCrawler
   class << self
 
     def perform(name, source)
-      dive [source], Set.new
+      walk source
     end
 
     def index_path path
       path_string = path.join ','
-      index 'path', path_string
+      path_index, path_created = index 'path', path_string
+      Resque.enqueue MatrixBuilder, @name, path_index
     end
 
-    def dive path, marked=nil
-      node = path.last
-      marked.add node
-      node_value = redis.hget 'node', node
+    def walk source
+      queue = []
+      marked = []
 
-      unless node_value.empty?
+      queue.push :node => source, :walk => [source]
+      marked.push source
+
+      until queue.empty?
+        node_walk = queue.shift
+        node = node_walk[:node]
+        walk = node_walk[:walk]
+
         edges_from_node = redis.smembers "edges_from_node:#{node}"
 
         if edges_from_node.empty?
-          index_path path
+          index_path walk
         else
           edges_from_node.each do |edge_node|
             edge, dest = edge_node.split ','
             unless marked.include? dest
-              path.push edge, dest
-              dive path, marked 
-              path.pop 2
+              marked.push dest
+              queue.push :node => dest, :walk => walk + [edge, dest]
             end
           end
         end
-
-        marked.delete node
       end
     end
 

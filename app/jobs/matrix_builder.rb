@@ -16,7 +16,7 @@ class MatrixBuilder
 
       nodes = evens path
       nodes.each_with_index do |node, pos|
-        tuple = [pos + 1, path.size, ti].join ','
+        tuple = [pos + 1, nodes.size, ti].join ','
         redis.hset 'matrix', "#{path_index}:#{node}", tuple
       end
 

@@ -40,18 +40,24 @@ module BRGS
 
     def self.parse rdf_string
       rdf_string.each_line do |line|
-        matches = line.match(/<(.*)> <(.*)> ([<"])(.*)[>"] \./)
-        if matches
-          s = matches[1]
-          p = matches[2]
-          o = matches[4]
-          o_literal = matches[3] == '"'
-          parse_line(s, p, o, o_literal)
+        parse_line line do |s, p, o, o_literal|
+          store_triple(s, p, o, o_literal)
         end
       end
     end
 
-    def self.parse_line(s, p, o, o_literal)
+    def self.parse_line line, &block
+      matches = line.match(/<(.*)> <(.*)> ("((?:\\"|[^"])*)")?((\^\^)?<([^>]+)>)? \./)
+      if matches
+        s = matches[1]
+        p = matches[2]
+        o = matches[4].nil? ? matches[7] : matches[4]
+        o_literal = !matches[4].nil?
+        block.call s, p, o, o_literal
+      end
+    end
+
+    def self.store_triple(s, p, o, o_literal)
       si, sc = BRGS::Indexes.index 'node', s
       pi = BRGS::Indexes.index('edge', p)[0]
       oi, oc = BRGS::Indexes.index 'node', o

@@ -39,6 +39,16 @@ namespace :brgs do
     puts `curl -s #{web_server}:5678/path/#{args[:path_index]}`
   end
 
+  desc 'Prints the indexes'
+  task :indexes do
+    puts PrintUtils.indexes
+  end
+
+  desc 'Prints the sparse matrix'
+  task :sparse_matrix do
+    puts PrintUtils.sparse_matrix
+  end
+
   task :servers_rb do
     puts NetworkBuilder.servers_rb
   end

@@ -8,6 +8,16 @@ describe NetworkBuilder do
       described_class.topology
   end
 
+  def instance options
+    options[:status] = :running
+    OpenStruct.new options
+  end
+
+  def inactive_instance options
+    options[:status] = :stopped
+    OpenStruct.new options
+  end
+
   shared_examples 'an empty topology' do
     it 'and returns a nil redis and an empty servers list' do
       topology = topology_for instances
@@ -27,9 +37,9 @@ describe NetworkBuilder do
       it_behaves_like 'an empty topology' do
         let(:instances) do
           [
-            OpenStruct.new(:tags => {:a_tag => 'a-value'}),
-            OpenStruct.new(:tags => {:b_tag => 'b-value'}),
-            OpenStruct.new(:tags => {:c_tag => 'c-value'})
+            instance(:tags => {:a_tag => 'a-value'}),
+            instance(:tags => {:b_tag => 'b-value'}),
+            instance(:tags => {:c_tag => 'c-value'})
           ]
         end
       end
@@ -38,7 +48,7 @@ describe NetworkBuilder do
     context 'and there are instances with brgs_roles' do
       it 'splits the brgs_roles tags for roles as symbols' do
         instances = [
-          OpenStruct.new(:tags => {'brgs_roles' => 'a_role,b_role'})
+          instance(:tags => {'brgs_roles' => 'a_role,b_role'})
         ]
 
         topology = topology_for instances
@@ -47,7 +57,7 @@ describe NetworkBuilder do
 
       it 'returns servers dns and internal names from the instances' do
         instances = [
-          OpenStruct.new({
+          instance({
             :tags => {'brgs_roles' => 'a_role,b_role'},
             :dns_name => 'public-server-name',
             :private_dns_name => 'internal-server-name'
@@ -61,11 +71,11 @@ describe NetworkBuilder do
 
       it 'sets the last instance with redis role as the redis server' do
         instances = [
-          OpenStruct.new({
+          instance({
             :tags => {'brgs_roles' => 'redis'},
             :private_dns_name => 'server-one'
           }),
-          OpenStruct.new({
+          instance({
             :tags => {'brgs_roles' => 'redis'},
             :private_dns_name => 'server-two'
           })
@@ -77,7 +87,7 @@ describe NetworkBuilder do
 
       it 'sets foreman concurrency when found' do
         instances = [
-          OpenStruct.new({
+          instance({
             :tags => {'brgs_roles' => 'a-role',
                   'brgs_foreman_concurrency' => 'concurrency_rules'}
           })
@@ -88,10 +98,20 @@ describe NetworkBuilder do
       end
 
       it 'ignores foreman concurrency when not set' do
-        instances = [ OpenStruct.new({:tags => {'brgs_roles' => 'a-role'}}) ]
+        instances = [ instance({:tags => {'brgs_roles' => 'a-role'}}) ]
 
         topology = topology_for instances
         topology[:servers].first.keys.should_not include :concurrency
+      end
+
+      it 'ignores inactive instances' do
+        instances = [
+          instance({:tags => {'brgs_roles' => 'a-role'}}),
+          inactive_instance({:tags => {'brgs_roles' => 'a-role'}})
+        ]
+
+        topology = topology_for instances
+        topology[:servers].size.should eq 1
       end
     end
   end

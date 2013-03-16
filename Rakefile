@@ -49,6 +49,7 @@ namespace :brgs do
     puts PrintUtils.sparse_matrix
   end
 
+  desc 'Builds a server list from your EC2 running instances'
   task :servers_rb do
     puts NetworkBuilder.servers_rb
   end

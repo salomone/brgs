@@ -26,5 +26,9 @@ module BRGS
     def self.column node
       redis.hgetall("matrix_node:#{node}")
     end
+
+    def self.row path
+      redis.hgetall("matrix_path:#{path}")
+    end
   end
 end

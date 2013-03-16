@@ -24,6 +24,17 @@ module BRGSResque
           BRGS.spider 'paper'
         end
 
+        get '/node_query.json' do
+          content_type :json
+          if params.key? :q
+            status 400
+            return {:error => 'must specify query parameter ?q=xxx'}.to_json
+          end
+
+          paths = BRGS.node_query params[:q]
+          {:q => params[:q], :paths => paths}.to_json
+        end
+
         get '/path/:path_index' do
           PrintUtils.path params[:path_index]
         end

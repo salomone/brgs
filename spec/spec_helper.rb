@@ -11,3 +11,9 @@ RSpec.configure do |config|
 end
 
 require 'ostruct'
+
+def parse_paper
+  paper_file = File.open 'spec/assets/paper.nt'
+  rdf = paper_file.read
+  BRGS::Parser.parse rdf
+end

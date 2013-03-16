@@ -1,9 +1,10 @@
 <h1>Counters</h1>
 <table>
-  <tr><td>Nodes</td><td><%= BRGS::Index.node_count %></td></tr>
-  <tr><td>Sources</td><td><%= BRGS::Index.source_count %></td></tr>
-  <tr><td>Sinks</td><td><%= BRGS::Index.sink_count %></td></tr>
-  <tr><td>Paths</td><td><%= BRGS::Index.path_count %></td></tr>
+  <tr><td>Nodes</td><td><%= BRGS::Indexes.node_count %></td></tr>
+  <tr><td>Sources</td><td><%= BRGS::Indexes.source_count %></td></tr>
+  <tr><td>Sinks</td><td><%= BRGS::Indexes.sink_count %></td></tr>
+  <tr><td>Paths</td><td><%= BRGS::Indexes.path_count %></td></tr>
+  <tr><td>Paths</td><td><%= BRGS::Indexes.template_count %></td></tr>
 </table>
 
 <%= stats_poll %>

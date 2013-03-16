@@ -5,7 +5,7 @@ describe FileSplitter do
   empty_file = "spec/assets/empty_file.txt"
   a_1_line_file = "spec/assets/1_line_file.txt"
   a_3_line_file = "spec/assets/3_lines_file.txt"
-  paper_file = "spec/assets/paper.nt"
+  paper_file = 'spec/assets/proposal.nt'
   paper_file_5_to_8_lines = File.read "spec/assets/paper_5_to_8.nt"
 
   context 'when counting lines' do

@@ -16,12 +16,12 @@ module BRGSResque
 
         post '/admission' do
           open(params['rdf-uri']) do |f|
-            BRGS::Index.admission 'paper', f.read
+            BRGS.admission 'paper', f.read
           end
         end
 
         put '/spider' do
-          BRGS::Index.spider 'paper'
+          BRGS.spider 'paper'
         end
 
         get '/path/:path_index' do

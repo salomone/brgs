@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class GraphSpider
+  extend Resque::Plugins::JobStats
   @queue = :graph_spider
 
   def self.perform(name)

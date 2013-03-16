@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class GraphCrawler
+  extend Resque::Plugins::JobStats
   @queue = :graph_crawler
 
   def self.perform name, source

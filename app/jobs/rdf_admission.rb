@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class RDFAdmission
+  extend Resque::Plugins::JobStats
   @queue = :rdf_admission
 
   def self.perform rdf_content

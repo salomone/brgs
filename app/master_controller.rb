@@ -1,6 +1,7 @@
 require 'resque'
 require 'resque/server'
 require 'open-uri'
+require 'resque-job-stats/server'
 
 # Extends Resque Web Based UI.
 # Structure has been borrowed from ResqueScheduler.

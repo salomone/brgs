@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'spec_helper'
 
-describe RDFParsing, "parser" do
+describe RDFParsing do
   paper_file = File.open "spec/assets/paper.nt"
 
   context "when performing a job" do

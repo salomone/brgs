@@ -28,6 +28,11 @@ Now you can use the API to parse NTriples files. See the example by running each
 $ rake brgs:admission
 $ rake brgs:spider
 
+You can point to where your web server was deployed and to a different nt file by using environment variable. For instance:
+
+$ NTFILE=https://s3.amazonaws.com/example-rdfs/stw.nt REMOTE=ec2.my.server.com rake brgs:admission
+$ REMOTE=ec2.my.server.com rake brgs:spider
+
 
 == Deploying
 
@@ -47,11 +52,11 @@ As of now, the deploy process expects all servers to be Ubuntu Servers, accessib
 
 $ cap deploy:setup
 
-On the first time you deploy, run:
+On the first time you deploy, to avoid errors when starting foreman to take care of the processes, run:
 
 $ cap deploy:cold
 
-To avoid errors when starting foreman to take care of the processes. Finally, everytime later you wish to deploy just run:
+Finally, everytime later you wish to deploy just run:
 
 $ cap deploy
 

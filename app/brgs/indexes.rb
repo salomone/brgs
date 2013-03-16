@@ -10,8 +10,16 @@ module BRGS
       redis.scard 'sources'
     end
 
+    def self.sources
+      redis.smembers 'sources'
+    end
+
     def self.sink_count
       redis.scard 'sinks'
+    end
+
+    def self.path_indexes
+      redis.hkeys 'path'
     end
 
     def self.path_count

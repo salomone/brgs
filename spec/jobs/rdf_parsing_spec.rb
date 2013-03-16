@@ -9,7 +9,7 @@ describe RDFParsing do
       rdf_segment = paper_file.read
 
       BRGS::Parser.
-          should_receive(:perform).
+          should_receive(:parse_segment).
           with('paper', rdf_segment)
 
       described_class.perform('paper', rdf_segment)

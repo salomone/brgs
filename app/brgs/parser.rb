@@ -8,15 +8,15 @@ module BRGS
         redis.del "edges_from_node:#{n}"
       end
 
-      destroy_index 'nodes'
-      destroy_index 'edges'
+      destroy_index 'node'
+      destroy_index 'edge'
 
       redis.del 'sources'
       redis.del 'sinks'
       redis.del 'segments'
     end
 
-    def self.perform(name, rdf_segment)
+    def self.parse_segment(name, rdf_segment)
       @name = name
       @rdf_segment = rdf_segment
       rdf_string = redis.hget 'segments', @rdf_segment

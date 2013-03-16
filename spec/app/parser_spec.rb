@@ -5,7 +5,7 @@ describe BRGS::Parser do
   it 'should be better unit tested'
 
   it 'works in general' do
-    parse_paper
+    parse_paper_rdf
 
     BRGS::Indexes.node_count.should eq 13
     BRGS::Indexes.source_count.should eq 3

@@ -1,0 +1,212 @@
+==== algo1 ====
+findNodes(tuples):
+  nodesSet = new DB::Set();
+  for each tuple in tuples:
+    s, p, o = parseTuple(tuple)
+    nodesSet.add(s)
+    nodesSet.add(o)
+  end
+  nodes = new DB::Array()
+  n = 0
+  for each node in nodesSet:
+    nodes[n] = node
+    n++
+  end
+  DB.persist(nodes)
+end
+
+==== algo2 ====
+findNodesSourcesAndSinks(tuples):
+  nodesSet = new DB::Set()
+  sources = new DB::Set()
+  for each tuple in tuples:
+    s, p, o = parseInput(tuple)
+    if s not in nodesSet:
+      nodesSet.add(s)
+      sources.add(s)
+    end
+    nodesSet.add(o)
+    sources.rem(o)
+  end
+  nodes = new DB::Array()
+  n = 0
+  for each node in nodesSet
+    nodes[n] = node
+    n++
+  end
+  DB.persist(nodes)
+  DB.persist(sources)
+end
+
+==== algo3 ====
+findNodesSourcesAndSinks(tuples):
+  nodes = new DB::TwoWayArray()
+  predicateObjects = new DB::Array()
+  sources = new DB::Set()
+  for each tuple in tuples:
+    s, p, o = parseTuple(tuple)
+    if s not in nodes:
+      nodeIndex = nodes.add(s)
+      predicateObjects[nodeIndex] = new DB::Set()
+      sources.add(s)
+    end
+    nodes.add(o)
+    nodeIndex = nodes.index(s)
+    predicateObjects[nodeIndex].add((p, o))
+    sources.rem(o)
+  end
+end
+
+==== algo4 ====
+BRGS.mapTupleParsing(file, j):
+  linesPerJob = files.lines.length / j
+  for i = 0 to j:
+    startLine = i * linesPerJob
+    endLine = (i + 1) * linesPerJob - 1
+    job = new MR::Job(findNodesSourcesAndSinks, file.lines[startLine:endLine])
+    MR.enqueue(job)
+  end
+end
+
+==== algo5 ====
+pathDive(path, marked):
+  node = path.last
+  marked.add(node)
+  predicateObjects = DB.loadPredicateObjects(node)
+  if predicateObjects is empty:
+    DB.indexFullPath(path)
+  else:
+    for each (p, o) in predicateObjects:
+      path.push(p, o)
+      pathDive(path, marked)
+      path.pop(2)
+    end
+  end
+  marked.rem(node)
+end
+
+==== algo6 ====
+mapSourceDFS():
+  sources = DB.loadSources()
+  for each source in sources:
+    path = new DB::Set()
+    marked = new DB::Set()
+    path.push(source)
+    job = new MR::Job(pathDive, path, marked)
+    MR.enqueue(job)
+  end
+end
+
+==== algo7 ====
+storeFullPathPositions(fullPath):
+  template = DB.templateFromFullPath(fullPath)
+  fullPathCount = (fullPath.length / 2) + 1
+  fullPathPos = 1
+  while fullPathPos < fullPathCount:
+    i = (2 * fullPathPos) - 1
+    node = fullPath[i]
+    DB.storePosition(node, fullPath, fullPathPos, fullPathCount, template)
+    fullPathPos++
+  end
+end
+
+==== algo8 ====
+mapStoreFullPathPositions():
+  fullPaths = DB.loadFullPaths()
+  for each fullPath in fullPaths:
+    fullPathArray = new DB::Array(fullPath)
+    job = new MR::Job(storeFullPositions, fullPathArray)
+    MR.enqueue(job)
+  end
+end
+
+==== algo9 ====
+BRGS.nodeQuery(keywords):
+    node = SE.selectNode(keywords)
+    return DB.sparseMatrixColumn(node)
+end
+
+==== algo10 ====
+BRGS.pathIntersectionQuery(path1, path2):
+  path1Row = DB.sparseMatrixRow(path1)
+  path2Row = DB.sparseMatrixRow(path2)
+  intersectingNodes = new DB::Set()
+  for each node in path1Row:
+    if node in path2Row:
+      intersectingNodes.add(node)
+    end
+  end
+  return intersectingNodes
+end
+
+==== algo11 ====
+BRGS.pathInternectionRetrievalQuery(path):
+  paths = new DB::Set()
+  for each node in path:
+    intersectingPath = BRGS.nodeQuery(node)
+    paths.add(intersectingPath)
+  end
+  return paths
+end
+
+==== algo12 ====
+BRGS.pathCuttingQuery(path, node, direction):
+  nodesWithPositions = BRGS.pathQuery(path)
+  referencePosition = nodesWithPositions[node].position
+  selectNodes = new DB::Set()
+  for each iterNode in path:
+    nodeWithPosition = nodesWithPositions[iterNode]
+    if direction == 'gt':
+      if nodeWithPosition.position > referencePosition:
+        selectedNodes.add(nodeWithPosition.node)
+      end
+    else:
+      if nodeWithPosition.position < referencePosition:
+        selectedNodes.add(nodeWithPosition.node)
+      end
+    end
+  end
+  return selectedNodes
+end
+
+==== algo13 ====
+BRGS.deleteEdgeByLabel(label):
+  templates = SE.selectTemplates(label)
+  positions = BRGS.sparseMatrixByTemplates(templates)
+  BRGS.clearPositions(positions)
+end
+BRGS.clearPositions(positions):
+  fullPaths = new DB::Set()
+  templates = new DB::Set()
+  for each position in positions:
+    fullPaths.add(position['fullPath'])
+    templates.add(position['template'])
+    DB.clearPosition(position['node'], position['fullPath'])
+  end
+  for each fullPath in fullPaths:
+    DB.deIndex(fullPath)
+  end
+  for each template in templates:
+    DB.deIndex(template)
+  end
+end
+
+==== algo14 ====
+BRGS.deleteEdge(node1, label, node2):
+  templates = SE.selectTemplates(label)
+  positionsToDelete = new DB::Set()
+  positions1 = new DB::Array()
+  positions2 = new DB::Array()
+  positions1 = BRGS.nodeQuery(node1)
+  positions2 = BRGS.nodeQuery(node2)
+  for each position1 in positions1:
+    fullPathIdx = position1['fullPath']
+    position2 = positions2[fullPathIdx]
+    dist = position1['fullPathPos'] = position1['fullPathPos']
+    if position1['template'] in templates and dist == 1:
+      positionsToDelete.add(position1)
+      positionsToDelete.add(position2)
+    end
+  end
+  BRGS.clearPositions(positionsToDelete)
+end

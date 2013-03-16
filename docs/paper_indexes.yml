@@ -1,0 +1,37 @@
+nodes:
+    - Movie
+    - Director
+    - Actor
+    - mov1
+    - mov2
+    - act1
+    - dir1
+    - dir2
+    - dir3
+    - The Avengers
+    - Scarlett Johansson
+    - Hitchcock
+    - 2012
+full_paths:
+    - dir1-type-Director
+    - dir2-type-Director
+    - dir3-type-Director
+    - dir3-name-Hitchcock
+    - dir1-directed-mov1-name-The Avengers
+    - dir1-directed-mov1-type-Movie
+    - dir1-directed-mov1-year-2012
+    - dir1-directed-mov1-cast-act1-name-Scarlett Johansson
+    - dir1-directed-mov1-cast-act1-type-Actor
+    - dir2-directed-mov2-name-Hitchcock
+    - dir2-directed-mov2-type-Movie
+    - dir2-directed-mov2-year-2012
+    - dir2-directed-mov2-cast-act1-name-Scarlett Johansson
+    - dir2-directed-mov2-cast-act1-type-Actor
+templates:
+    - "*-type-*"
+    - "*-name-*"
+    - "*-directed-*-name-*"
+    - "*-directed-*-year-*"
+    - "*-directed-*-type-*"
+    - "*-directed-*-cast-*-name-*"
+    - "*-directed-*-cast-*-type-*"

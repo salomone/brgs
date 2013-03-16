@@ -12,6 +12,18 @@ end
 
 require 'ostruct'
 
+def build_data
+  destroy_data
+  parse_paper_rdf
+  walk_paper_paths
+  build_paper_sparse_matrix
+end
+
+def destroy_data
+  BRGS::Parser.destroy_indexes
+  BRGS::Walker.destroy_paths_templates_sparse_matrix
+end
+
 def parse_paper_rdf
   paper_file = File.open 'spec/assets/paper.nt'
   rdf = paper_file.read

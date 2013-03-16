@@ -8,8 +8,8 @@ module BRGS
         redis.del "edges_from_node:#{n}"
       end
 
-      destroy_index 'node'
-      destroy_index 'edge'
+      BRGS::Indexes.destroy_index 'node'
+      BRGS::Indexes.destroy_index 'edge'
 
       redis.del 'sources'
       redis.del 'sinks'
@@ -52,9 +52,9 @@ module BRGS
     end
 
     def self.parse_line(s, p, o, o_literal)
-      si, sc = index 'node', s
-      pi = index('edge', p)[0]
-      oi, oc = index 'node', o
+      si, sc = BRGS::Indexes.index 'node', s
+      pi = BRGS::Indexes.index('edge', p)[0]
+      oi, oc = BRGS::Indexes.index 'node', o
 
       redis.sadd "edges_from_node:#{si}", "#{pi},#{oi}"
 

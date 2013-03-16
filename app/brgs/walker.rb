@@ -3,11 +3,9 @@ module BRGS
     extend RedisConnection
 
     def self.destroy_paths_templates_sparse_matrix
-      destroy_index 'path'
-      destroy_index 'template'
-
-      redis.del 'visited_count'
-      redis.del 'matrix'
+      BRGS::Indexes.destroy_index 'path'
+      BRGS::Indexes.destroy_index 'template'
+      BRGS::SparseMatrix.destroy_matrix
     end
 
     def self.walk source, &keep_walking_block
@@ -26,7 +24,7 @@ module BRGS
 
         if edges_from_node.empty?
           path_string = walk.join ','
-          path_index, path_created = index 'path', path_string
+          path_index, path_created = BRGS::Indexes.index 'path', path_string
           unless keep_walking_block.nil?
             keep_walking_block.call path_index
           end

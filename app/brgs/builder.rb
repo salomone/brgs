@@ -1,18 +1,17 @@
 module BRGS
   class Builder
-    extend RedisConnection
 
     def self.build path_index
-      path_string = redis.hget 'path', path_index
+      path_string = BRGS::Indexes.get 'path', path_index
       path = path_string.split ','
       template = odds path
       template_string = template.join ','
-      ti = index('template', template_string)[0]
+      ti, = BRGS::Indexes.index 'template', template_string
 
       nodes = evens path
-      nodes.each_with_index do |node, pos|
+      nodes.each_with_index do |node_index, pos|
         tuple = [pos + 1, nodes.size, ti].join ','
-        redis.hset 'matrix', "#{path_index}:#{node}", tuple
+        BRGS::SparseMatrix.store_position node_index, path_index, tuple
       end
 
     end

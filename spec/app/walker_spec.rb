@@ -16,9 +16,9 @@ describe BRGS::Walker do
     c.should_receive(:print_path).exactly(14).times
 
     parse_paper_rdf
-    BRGS::Walker.destroy_paths_templates_sparse_matrix
+    described_class.destroy_paths_templates_sparse_matrix
     BRGS::Indexes.sources.each do |source|
-      BRGS::Walker.walk source do |path_index|
+      described_class.walk source do |path_index|
         c.print_path path_index
       end
     end

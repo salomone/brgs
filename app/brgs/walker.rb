@@ -10,7 +10,7 @@ module BRGS
       redis.del 'matrix'
     end
 
-    def self.walk source, keep_walking_cb=nil
+    def self.walk source, &keep_walking_block
       queue = []
       marked = []
 
@@ -27,7 +27,9 @@ module BRGS
         if edges_from_node.empty?
           path_string = walk.join ','
           path_index, path_created = index 'path', path_string
-          keep_walking_cb path_index unless keep_walking_cb.nil?
+          unless keep_walking_block.nil?
+            keep_walking_block.call path_index
+          end
         else
           edges_from_node.each do |edge_node|
             edge, dest = edge_node.split ','

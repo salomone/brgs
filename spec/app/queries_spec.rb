@@ -84,4 +84,40 @@ describe BRGS::Queries do
     paths.should eq [1, 2, 3, 4, 5, 6]
   end
 
+  it 'finds path section before given node' do
+    build_data
+
+    path_array = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ]
+
+    path_index = BRGS::Search.path path_array
+    node = BRGS::Search.node 'http://demo.com/movie.rdf#mov1'
+
+    nodes = described_class.path_cutting_start_query path_index, node
+    nodes.should eq [8, 1]
+  end
+
+  it 'finds path section after given node' do
+    build_data
+
+    path_array = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ]
+
+    path_index = BRGS::Search.path path_array
+    node = BRGS::Search.node 'http://demo.com/movie.rdf#mov1'
+
+    nodes = described_class.path_cutting_end_query path_index, node
+    nodes.should eq [1, 2]
+  end
+
 end

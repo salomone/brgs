@@ -30,5 +30,22 @@ module BRGS
       BRGS::SparseMatrix.row(path).keys.inject([]) {|r, n| r |= node_query(n)}
     end
 
+    def self.path_cutting_start_query path, node
+      row = BRGS::SparseMatrix.row(path)
+      node_position = row[node.to_s].split(',')[0].to_i
+      row.select do |node, cell|
+        tuple = cell.split ','
+        tuple[0].to_i <= node_position
+      end.keys.map {|k| k.to_i}
+    end
+
+    def self.path_cutting_end_query path, node
+      row = BRGS::SparseMatrix.row(path)
+      node_position = row[node.to_s].split(',')[0].to_i
+      row.select do |node, cell|
+        tuple = cell.split ','
+        tuple[0].to_i >= node_position
+      end.keys.map {|k| k.to_i}
+    end
   end
 end

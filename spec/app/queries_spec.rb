@@ -34,7 +34,7 @@ describe BRGS::Queries do
 
     node = BRGS::Search.node 'Hitchcock'
     paths_found = described_class.final_node_query node
-    paths_found.should eq [10, 13]
+    paths_found.should eq [8, 13]
   end
 
 end

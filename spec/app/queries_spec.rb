@@ -35,6 +35,10 @@ describe BRGS::Queries do
     node = BRGS::Search.node 'Hitchcock'
     paths_found = described_class.final_node_query node
     paths_found.should eq [8, 13]
+    paths_found.each do |path_index|
+      path = BRGS::Indexes.get 'path', path_index
+      path.split(',')[-1].to_i.should eq node
+    end
   end
 
 end

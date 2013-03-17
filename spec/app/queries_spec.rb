@@ -41,4 +41,30 @@ describe BRGS::Queries do
     end
   end
 
+  it 'finds if path intersect each other' do
+    build_data
+
+    path1_array = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ]
+
+    path2_array = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://demo.com/syntax#year',
+      '2012'
+    ]
+
+    path1_index = BRGS::Search.path path1_array
+    path2_index = BRGS::Search.path path2_array
+
+    intersect = described_class.path_intersection_query path1_index, path2_index
+    intersect.should be_true
+  end
+
 end

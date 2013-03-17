@@ -67,4 +67,21 @@ describe BRGS::Queries do
     intersect.should be_true
   end
 
+  it 'finds paths that intersect another' do
+    build_data
+
+    path_array = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ]
+
+    path_index = BRGS::Search.path path_array
+
+    paths = described_class.path_intersection_retrieval_query path_index
+    paths.should eq [1, 2, 3, 4, 5, 6]
+  end
+
 end

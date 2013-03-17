@@ -26,5 +26,9 @@ module BRGS
       end
     end
 
+    def self.path_intersection_retrieval_query path
+      BRGS::SparseMatrix.row(path).keys.inject([]) {|r, n| r |= node_query(n)}
+    end
+
   end
 end

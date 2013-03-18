@@ -33,6 +33,12 @@ module BRGSResque
           {:q => params[:q], :paths => paths}.to_json
         end
 
+        get '/path_query.json' do
+          content_type :json
+          nodes = BRGS.path_query params[:q]
+          {:q => params[:q], :nodes => nodes}.to_json
+        end
+
         get '/path/:path_index' do
           PrintUtils.path params[:path_index]
         end

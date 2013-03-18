@@ -11,4 +11,10 @@ module BRGS
     selected_node = BRGS::Search.node node
     BRGS::Queries.node_query selected_node
   end
+
+  def self.path_query path
+    selected_path = BRGS::Search.path path.split ','
+    BRGS::Queries.path_query selected_path
+  end
+
 end

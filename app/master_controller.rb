@@ -51,6 +51,12 @@ module BRGSResque
           {:q => params[:q], :intersect => intersect}.to_json
         end
 
+        get '/path_intersection_retrieval_query.json' do
+          content_type :json
+          paths = BRGS.path_intersection_retrieval_query params[:q]
+          {:q => params[:q], :paths => paths}.to_json
+        end
+
         get '/path/:path_index' do
           PrintUtils.path params[:path_index]
         end

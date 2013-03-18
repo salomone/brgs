@@ -28,4 +28,9 @@ module BRGS
     BRGS::Queries.path_intersection_query selected_path1, selected_path2
   end
 
+  def self.path_intersection_retrieval_query path
+    selected_path = BRGS::Search.path path.split ','
+    BRGS::Queries.path_intersection_retrieval_query selected_path
+  end
+
 end

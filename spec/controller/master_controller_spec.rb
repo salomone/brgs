@@ -93,4 +93,22 @@ describe "master_controller" do
     last_response.should be_ok
     last_response.body.should eq expected_response.to_json
   end
+
+  it 'returns paths that intersect another' do
+    build_data
+
+    path = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ].join ','
+
+    expected_response = {:q => path, :paths => [1, 2, 3, 4, 5, 6]}
+
+    get "/path_intersection_retrieval_query.json?q=#{URI::encode path}"
+    last_response.should be_ok
+    last_response.body.should eq expected_response.to_json
+  end
 end

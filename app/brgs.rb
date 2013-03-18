@@ -17,4 +17,9 @@ module BRGS
     BRGS::Queries.path_query selected_path
   end
 
+  def self.final_node_query node
+    selected_node = BRGS::Search.node node
+    BRGS::Queries.final_node_query selected_node
+  end
+
 end

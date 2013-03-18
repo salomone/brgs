@@ -1,6 +1,5 @@
 require 'resque'
 require 'resque/server'
-require 'open-uri'
 require 'resque-job-stats/server'
 
 # Extends Resque Web Based UI.
@@ -16,9 +15,7 @@ module BRGSResque
       base.class_eval do
 
         post '/admission' do
-          open(params['rdf-uri']) do |f|
-            BRGS.admission 'paper', f.read
-          end
+          BRGS.admission 'paper', params['rdf-uri']
         end
 
         put '/spider' do

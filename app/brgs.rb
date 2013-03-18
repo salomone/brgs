@@ -1,6 +1,6 @@
 module BRGS
-  def self.admission name, contents
-    Resque.enqueue RDFAdmission, contents
+  def self.admission name, uri
+    Resque.enqueue RDFAdmission, uri
   end
 
   def self.spider name

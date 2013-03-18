@@ -17,5 +17,8 @@ group :development, :test do
   gem 'railsless-deploy', :require => false
   gem 'ruby-prof'
   gem 'simplecov', :require => false
+end
+
+group :test do
   gem 'resque_spec'
 end

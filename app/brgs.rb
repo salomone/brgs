@@ -33,4 +33,16 @@ module BRGS
     BRGS::Queries.path_intersection_retrieval_query selected_path
   end
 
+  def self.path_cutting_start_query path, node
+    selected_path = BRGS::Search.path path.split ','
+    selected_node = BRGS::Search.node node
+    BRGS::Queries.path_cutting_start_query selected_path, selected_node
+  end
+
+  def self.path_cutting_end_query path, node
+    selected_path = BRGS::Search.path path.split ','
+    selected_node = BRGS::Search.node node
+    BRGS::Queries.path_cutting_end_query selected_path, selected_node
+  end
+
 end

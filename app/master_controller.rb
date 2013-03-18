@@ -57,6 +57,18 @@ module BRGSResque
           {:q => params[:q], :paths => paths}.to_json
         end
 
+        get '/path_cutting_start_query.json' do
+          content_type :json
+          partial_path = BRGS.path_cutting_start_query(*params[:q].split('|'))
+          {:q => params[:q], :partial_path => partial_path}.to_json
+        end
+
+        get '/path_cutting_end_query.json' do
+          content_type :json
+          partial_path = BRGS.path_cutting_end_query(*params[:q].split('|'))
+          {:q => params[:q], :partial_path => partial_path}.to_json
+        end
+
         get '/path/:path_index' do
           PrintUtils.path params[:path_index]
         end

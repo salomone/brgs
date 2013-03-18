@@ -111,4 +111,48 @@ describe "master_controller" do
     last_response.should be_ok
     last_response.body.should eq expected_response.to_json
   end
+
+  it 'returns path section before a node as json' do
+    build_data
+
+    path = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ].join ','
+
+    node = 'http://demo.com/movie.rdf#mov1'
+
+    query = "#{path}|#{node}"
+
+    expected_response = {:q => query, :partial_path => [8, 1]}
+
+    get "/path_cutting_start_query.json?q=#{URI::encode query}"
+    last_response.should be_ok
+    last_response.body.should eq expected_response.to_json
+  end
+
+  it 'returns path section after a node as json' do
+    build_data
+
+    path = [
+      'http://demo.com/director.rdf#dir1',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov1',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'The Avengers'
+    ].join ','
+
+    node = 'http://demo.com/movie.rdf#mov1'
+
+    query = "#{path}|#{node}"
+
+    expected_response = {:q => query, :partial_path => [1, 2]}
+
+    get "/path_cutting_end_query.json?q=#{URI::encode query}"
+    last_response.should be_ok
+    last_response.body.should eq expected_response.to_json
+  end
 end

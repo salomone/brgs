@@ -23,18 +23,37 @@ describe BRGS::Queries do
       'The Avengers'
     ]
 
+    node1 = BRGS::Search.node 'http://demo.com/director.rdf#dir1'
+    node2 = BRGS::Search.node 'http://demo.com/movie.rdf#mov1'
+    node3 = BRGS::Search.node 'The Avengers'
+
     path_index = BRGS::Search.path path_array
 
     nodes_found = described_class.path_query path_index
-    nodes_found.should eq [8, 1, 2]
+    nodes_found.should eq [node1, node2, node3]
   end
 
   it 'finds all paths ending in a given a node' do
     build_data
 
     node = BRGS::Search.node 'Hitchcock'
+
+    path1 = BRGS::Search.path [
+      'http://demo.com/director.rdf#dir2',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov2',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'Hitchcock'
+    ]
+
+    path2 = BRGS::Search.path [
+      'http://demo.com/director.rdf#dir3',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'Hitchcock'
+    ]
+
     paths_found = described_class.final_node_query node
-    paths_found.should eq [8, 13]
+    paths_found.should eq [path1, path2]
     paths_found.each do |path_index|
       path = BRGS::Indexes.get 'path', path_index
       path.split(',')[-1].to_i.should eq node

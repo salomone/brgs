@@ -31,7 +31,11 @@ describe "master_controller" do
       'The Avengers'
     ].join ','
 
-    expected_response = {:q => path, :nodes => [8, 1, 2]}
+    node1 = BRGS::Search.node 'http://demo.com/director.rdf#dir1'
+    node2 = BRGS::Search.node 'http://demo.com/movie.rdf#mov1'
+    node3 = BRGS::Search.node 'The Avengers'
+
+    expected_response = {:q => path, :nodes => [node1, node2, node3]}
 
     get "/path_query.json?q=#{URI::encode path}"
     last_response.should be_ok

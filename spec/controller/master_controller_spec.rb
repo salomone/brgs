@@ -67,4 +67,30 @@ describe "master_controller" do
     last_response.should be_ok
     last_response.body.should eq expected_response.to_json
   end
+
+  it 'returns if paths intersect each other' do
+    build_data
+
+    path1 = [
+      'http://demo.com/director.rdf#dir2',
+      'http://demo.com/syntax#directed',
+      'http://demo.com/movie.rdf#mov2',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'Hitchcock'
+    ].join ','
+
+    path2 = [
+      'http://demo.com/director.rdf#dir3',
+      'http://www.w3.org/1999/02/22-rdf-syntax-ns#name',
+      'Hitchcock'
+    ].join ','
+
+    query = "#{path1}|#{path2}"
+
+    expected_response = {:q => query, :intersect => true}
+
+    get "/path_intersection_query.json?q=#{URI::encode query}"
+    last_response.should be_ok
+    last_response.body.should eq expected_response.to_json
+  end
 end

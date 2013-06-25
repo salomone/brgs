@@ -4,7 +4,7 @@ require 'spec_helper'
 describe BRGS::Search do
   it 'finds a node' do
     build_data
-
+    
     node_index_found = described_class.node 'Hitchcock'
     node_index_found.should eq 4
   end
@@ -21,6 +21,6 @@ describe BRGS::Search do
     ]
 
     path_index_found = described_class.path path_array
-    path_index_found.should eq 2
+    path_index_found.should eq 3
   end
 end

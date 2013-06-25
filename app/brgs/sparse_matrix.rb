@@ -19,8 +19,12 @@ module BRGS
       redis.sadd 'matrix_nodes', node
       redis.sadd 'matrix_paths', path
 
+      #puts 'node ' + node
+      #puts 'path ' + path
+
       redis.hset "matrix_node:#{node}", path, tuple
       redis.hset "matrix_path:#{path}", node, tuple
+      #debugger
     end
 
     def self.column node

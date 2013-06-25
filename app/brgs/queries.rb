@@ -13,7 +13,7 @@ module BRGS
       BRGS::SparseMatrix.column(node).select do |path, cell|
         tuple = cell.split(',')
         tuple[0] == tuple[1]
-      end.keys.map {|k| k.to_i}
+        end.keys.map {|k| k.to_i}
     end
 
     def self.path_intersection_query path1, path2

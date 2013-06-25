@@ -2,8 +2,11 @@ module BRGS
   class Builder
 
     def self.build path_index
+      
       path_string = BRGS::Indexes.get 'path', path_index
       path = path_string.split ','
+
+      
       template = odds path
       template_string = template.join ','
       ti, = BRGS::Indexes.index 'template', template_string
@@ -15,6 +18,8 @@ module BRGS
       end
 
     end
+
+
 
     def self.odds(a)
       a.values_at(* a.each_index.select {|i| i.odd?})

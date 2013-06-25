@@ -17,6 +17,7 @@ def build_data
   parse_paper_rdf
   walk_paper_paths
   build_paper_sparse_matrix
+  build_path_lenghts
 end
 
 def destroy_data
@@ -43,3 +44,8 @@ def build_paper_sparse_matrix
     BRGS::Builder.build path_index
   end
 end
+
+def build_path_lenghts
+  BRGS::Statistics.path_length
+end
+

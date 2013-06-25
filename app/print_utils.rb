@@ -65,18 +65,41 @@ class PrintUtils
     out = '-;'
     out += (1..nodes_count.to_i).to_a.join ';'
     out += "\n"
-
+    
     1.upto(paths_count.to_i) do |path_index|
       line = [path_index]
+      node_list = redis.hkeys 'matrix_path:'+"#{path_index}"
+      
       1.upto(nodes_count.to_i) do |node_index|
-        position = redis.hget 'matrix', "#{path_index}:#{node_index}"
+        if node_list.include?(node_index.to_s)
+          position = redis.hget 'matrix_path:'+"#{path_index}","#{node_index}" 
+        else
+          position = ""
+        end
+
+        #position = redis.hget 'matrix', "#{path_index}:#{node_index}"
         line << "(#{position})"
+        
       end
       out += line.join ';'
       out += "\n"
+
     end
 
     out
   end
+
+  def self.path_lengths
+    out= ''
+    
+    lengths = redis.hgetall 'path_length'
+    
+    lengths.each do |key, value|
+      out += key.to_s + "=>" + value.to_s + "\n"
+    end
+
+  out
+  end
+
 
 end

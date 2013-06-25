@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'resque', :require => "resque/server"
 gem 'resque-job-stats'
@@ -22,3 +22,5 @@ end
 group :test do
   gem 'resque_spec'
 end
+
+

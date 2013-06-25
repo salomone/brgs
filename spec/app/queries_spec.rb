@@ -139,4 +139,19 @@ describe BRGS::Queries do
     nodes.should eq [1, 2]
   end
 
+  it 'testing new test :D !!!' do
+    build_data 
+
+    puts PrintUtils.sparse_matrix
+
+    puts PrintUtils.path_lengths
+
+    node = BRGS::Search.node '000'
+    paths_found = described_class.node_query node
+    paths_found.should eq []
+  end
+
+
+
+
 end

@@ -13,7 +13,7 @@ $ bundle install
 
 To work on development and run tests, you will need redis-server up and running. After it's up, you can run the tests with:
 
-$ spec rspec
+$ rspec spec
 
 And see things integrated in your development machine with:
 

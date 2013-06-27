@@ -15,5 +15,10 @@ module BRGS
       BRGS::Indexes.find_index('path', path.join(',')).to_i
     end
 
+    def self.katz_node_search node_text
+      index = BRGS::Indexes.find_index('node', node_text).to_i
+      BRGS::Queries.node_katz_query index
+    end
+
   end
 end

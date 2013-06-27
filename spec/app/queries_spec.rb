@@ -146,7 +146,9 @@ describe BRGS::Queries do
 
     puts PrintUtils.path_lengths
 
-    node = BRGS::Search.node '000'
+
+
+    node = BRGS::Search.katz_node_search 'http://demo.com/movie.rdf#mov1'
     paths_found = described_class.node_query node
     paths_found.should eq []
   end

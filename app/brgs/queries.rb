@@ -47,5 +47,63 @@ module BRGS
         tuple[0].to_i >= node_position
       end.keys.map {|k| k.to_i}
     end
+
+    def self.node_katz_query(node)
+      #get the first level path list
+      path_list = BRGS::SparseMatrix.column(node)
+      results= Hash.new()
+      
+      #loop through this first level path list
+      path_list.keys.each_with_index do |path_it|
+        #path_size = path_list[path_it.to_s].split(',')[1]
+        node_position= path_list[path_it.to_s].split(',')[0]
+
+        #get directly connected nodes
+        node_list = BRGS::SparseMatrix.row(path_it)
+
+        node_list.keys.each_with_index do |node_it|
+          temp_node_weigth = node_weigth node_it
+          temp_node_position= node_list[node_it.to_s].split(',')[0]
+
+          #Katz_Index
+          katz = temp_node_weigth.to_i*(((temp_node_position.to_i - node_position.to_i).abs)**(0.5))
+          results[node_it]=[katz]
+        end
+      end
+
+      puts results
+
+      sorted_results= Hash[results.sort_by { |node, weigth| weigth }.reverse]
+
+      puts sorted_results
+      
+    end
+
+    def self.path_katz_query path, node
+      node_list = BRGS::SparseMatrix.row(path)
+      node_list.delete(node)
+      #get directly connected nodes
+      path_ans = Hash.new()
+      node_list.keys.each_with_index do |node_it|
+        #calculate each second level node weigth
+        node_weigth = node_katz_query(node_it,path,true)
+        #node_position= node_list[node_it.to_s].split(',')[0]
+        path_ans[node_it]=[node_weigth]
+      end
+      path_ans
+    end
+
+    def self.node_weigth node
+      path_list = BRGS::SparseMatrix.column(node)
+      node_weigth = 0
+      path_list.keys.each_with_index do |path_it|
+        path_size = path_list[path_it.to_s].split(',')[1]
+        node_weigth +=path_size.to_i
+      end
+      node_weigth
+    end
+
+
+    
   end
 end

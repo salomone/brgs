@@ -48,7 +48,7 @@ module BRGS
       end.keys.map {|k| k.to_i}
     end
 
-    def self.node_katz_query(node)
+    def self.node_katz_query node, katz_weigth, top_k
       #get the first level path list
       path_list = BRGS::SparseMatrix.column(node)
       results= Hash.new()
@@ -67,7 +67,7 @@ module BRGS
           temp_node_position= node_list[node_it.to_s].split(',')[0]
 
           #Katz_Index
-          katz = temp_node_weigth.to_i*(((temp_node_position.to_i - node_position.to_i).abs)**(0.5))
+          katz = temp_node_weigth.to_i*(((temp_node_position.to_i - node_position.to_i).abs)**(katz_weigth.to_i))
           results[node_it]=[katz]
         end
       end
@@ -76,7 +76,8 @@ module BRGS
 
 
       #puts sorted_results
-      return Hash[results.sort_by { |node, weigth| weigth }.reverse].keys
+      puts katz_weigth
+      return Hash[results.sort_by { |node, weigth| weigth }.reverse[0..("#{top_k}".to_i-1)]].keys
     end
 
     def self.path_katz_query path, node

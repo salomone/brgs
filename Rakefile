@@ -54,9 +54,10 @@ namespace :brgs do
     puts PrintUtils.sparse_matrix
   end
 
-  desc 'Prints the kartz results'
-  task :kartz_query do
-    puts PrintUtils.sparse_matrix
+  desc 'Prints the katz results'
+  task :katz_query, :params do |t, args|
+    puts `#{web_server}:5678/katz_query.json?#{args[:params]}`
+    puts `curl -s #{web_server}:5678/katz_query.json?#{args[:params]}`
   end
 
   desc 'Builds a server list from your EC2 running instances'

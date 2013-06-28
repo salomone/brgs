@@ -57,6 +57,7 @@ module BRGS
       path_list.keys.each_with_index do |path_it|
         #path_size = path_list[path_it.to_s].split(',')[1]
         node_position= path_list[path_it.to_s].split(',')[0]
+        
 
         #get directly connected nodes
         node_list = BRGS::SparseMatrix.row(path_it)
@@ -71,12 +72,11 @@ module BRGS
         end
       end
 
-      puts results
+      #puts results
 
-      sorted_results= Hash[results.sort_by { |node, weigth| weigth }.reverse]
 
-      puts sorted_results
-      
+      #puts sorted_results
+      return Hash[results.sort_by { |node, weigth| weigth }.reverse].keys
     end
 
     def self.path_katz_query path, node

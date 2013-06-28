@@ -44,8 +44,18 @@ namespace :brgs do
     puts PrintUtils.indexes
   end
 
+  desc 'Prints the path lengths'
+  task :path_lengths do
+    puts PrintUtils.path_lengths
+  end
+
   desc 'Prints the sparse matrix'
   task :sparse_matrix do
+    puts PrintUtils.sparse_matrix
+  end
+
+  desc 'Prints the kartz results'
+  task :kartz_query do
     puts PrintUtils.sparse_matrix
   end
 

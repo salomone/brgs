@@ -22,6 +22,16 @@ module BRGS
 
     end
 
+    def self.incr_path_length length
+      index = redis.hget "path_length", length.to_s
+  
+        if index.nil?
+          redis.hset "path_length", length.to_s, 1
+        else
+          redis.hincrby "path_length", length.to_s ,1
+        end
+    end
+
     def self.destroy_path_length
       redis.del "path_length"
     end

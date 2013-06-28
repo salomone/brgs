@@ -39,6 +39,12 @@ module BRGSResque
           {:q => params[:q], :nodes => nodes}.to_json
         end
 
+        get '/katz_query.json' do
+          content_type :json
+          nodes = BRGS.katz_node_query params[:q]
+          {:q => params[:q], :nodes => nodes}.to_json
+        end
+
         get '/final_node_query.json' do
           content_type :json
           paths = BRGS.final_node_query params[:q]

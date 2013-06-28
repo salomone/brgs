@@ -6,6 +6,7 @@ class RDFAdmission
   @queue = :rdf_admission
 
   def self.perform uri
+   
     rdf_content = open(uri).read
     BRGS::Parser.destroy_indexes
     BRGS::Walker.destroy_paths_templates_sparse_matrix

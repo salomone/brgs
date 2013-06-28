@@ -90,16 +90,22 @@ class PrintUtils
   end
 
   def self.path_lengths
-    out= ''
-    
+    out += "\n"
     lengths = redis.hgetall 'path_length'
+    if lengths == {} then
+      BRGS::Statistics.path_length
+      lengths = redis.hgetall 'path_length'
+    end
     
+    out= ''
+
+    lengths = redis.hgetall 'path_length'
     lengths.each do |key, value|
       out += key.to_s + "=>" + value.to_s + "\n"
     end
-
+ 
+  out += "\n"
   out
   end
-
 
 end

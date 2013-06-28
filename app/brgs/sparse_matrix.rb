@@ -13,19 +13,17 @@ module BRGS
 
       redis.del 'matrix_nodes'
       redis.del 'matrix_paths'
+
+      redis.del "path_length"
     end
 
     def self.store_position node, path, tuple
       redis.sadd 'matrix_nodes', node
       redis.sadd 'matrix_paths', path
-
-      #puts 'node ' + node
-      #puts 'path ' + path
-
       redis.hset "matrix_node:#{node}", path, tuple
-      redis.hset "matrix_path:#{path}", node, tuple
-      #debugger
+      redis.hset "matrix_path:#{path}", node, tuple 
     end
+
 
     def self.column node
       redis.hgetall("matrix_node:#{node}")

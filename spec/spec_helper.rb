@@ -23,6 +23,8 @@ end
 def destroy_data
   BRGS::Parser.destroy_indexes
   BRGS::Walker.destroy_paths_templates_sparse_matrix
+  BRGS::Statistics.destroy_path_length
+  BRGS::Indexes.destroy_sinks_and_sources
 end
 
 def parse_paper_rdf
@@ -30,6 +32,8 @@ def parse_paper_rdf
   rdf = paper_file.read
   BRGS::Parser.destroy_indexes
   BRGS::Parser.parse rdf
+
+  update_sink_and_sources
 end
 
 def walk_paper_paths
@@ -49,3 +53,6 @@ def build_path_lenghts
   BRGS::Statistics.path_length
 end
 
+def update_sink_and_sources
+  BRGS::Indexes.update_sinks_and_sources
+end

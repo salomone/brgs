@@ -64,11 +64,14 @@ module BRGS
 
       redis.sadd "edges_from_node:#{si}", "#{pi},#{oi}"
 
-      redis.sadd 'sources', si if sc
-      redis.srem 'sources', oi
+      redis.hincrby "in_degree", oi ,1
+      redis.hincrby "out_degree", si ,1
+     
+      #redis.sadd 'sources', si if sc
+      #redis.srem 'sources', oi
 
-      redis.sadd 'sinks', oi if oc && o_literal
-      redis.srem 'sinks', si
+      #redis.sadd 'sinks', oi if oc && o_literal
+      #redis.srem 'sinks', si
     end
 
   end

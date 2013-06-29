@@ -139,21 +139,17 @@ describe BRGS::Queries do
     nodes.should eq [1, 2]
   end
 
-  it 'testing new test :D !!!' do
+  it 'Search using Katz search' do
     build_data 
 
-    puts PrintUtils.sparse_matrix
+    #puts PrintUtils.sparse_matrix
 
-    puts PrintUtils.path_lengths
+    #puts PrintUtils.path_lengths
 
-
-
-    node = BRGS::Search.katz_node_search 'http://demo.com/movie.rdf#mov1'
-    paths_found = described_class.node_query node
-    paths_found.should eq []
+    node = BRGS::Search.node 'Hitchcock'
+    paths_found = described_class.node_katz_query node
+    paths_found.should eq ["9", "3", "4", "11"]
   end
-
-
 
 
 end

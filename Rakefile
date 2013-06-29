@@ -56,7 +56,6 @@ namespace :brgs do
 
   desc 'Prints the katz results'
   task :katz_query, :params do |t, args|
-    puts `#{web_server}:5678/katz_query.json?#{args[:params]}`
     puts `curl -s #{web_server}:5678/katz_query.json?#{args[:params]}`
   end
 

@@ -48,7 +48,7 @@ module BRGS
       end.keys.map {|k| k.to_i}
     end
 
-    def self.node_katz_query node, katz_weigth, top_k
+    def self.node_katz_query node, katz_weigth=0.8, top_k=20
       #get the first level path list
       path_list = BRGS::SparseMatrix.column(node)
       results= Hash.new()

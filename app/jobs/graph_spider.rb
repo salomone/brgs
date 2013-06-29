@@ -5,6 +5,7 @@ class GraphSpider
 
   def self.perform(name)
     BRGS::Walker.destroy_paths_templates_sparse_matrix
+    BRGS::Indexes.update_sinks_and_sources
     BRGS::Indexes.sources.each do |source|
       Resque.enqueue GraphCrawler, name, source
     end

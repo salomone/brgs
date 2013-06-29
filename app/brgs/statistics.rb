@@ -6,7 +6,7 @@ module BRGS
       destroy_path_length
 
       paths_count = redis.get 'paths_count'
-
+      
       1.upto(paths_count.to_i) do |path_index|
         path_string = redis.hget 'path' , "#{path_index}"
         length = path_string.split(',').size
